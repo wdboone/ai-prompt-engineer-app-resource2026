@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Engineer - Learning Path</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-top: 0;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .fixed-top-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .main-content {
+            padding-top: 300px;
+        }
+
+        /* Header and Progress Bar */
+        .header {
+            background: white;
+            padding: 15px 20px;
+            margin: 0;
+        }
+
+        .header > * {
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .goal-timeline {
+            background: #e8f4f8;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+
+        .progress-container {
+            background: #ecf0f1;
+            border-radius: 10px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            justify-content: center;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            background: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-weight: 500;
+            white-space: nowrap;
+            font-size: 12px;
+        }
+
+        .nav-tab:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .nav-tab.active {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            padding-top: 30px;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        /* Skill Cards */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .skill-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .skill-card h3 {
+            color: #2980b9;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .skill-card h3:hover {
+            color: #3498db;
+        }
+
+        .dropdown-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .dropdown-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .skill-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .skill-content.open {
+            max-height: 2000px;
+        }
+
+        .skill-content ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .skill-content li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* Practice Area */
+        .practice-box {
+            background: #fff9e6;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .practice-box h4 {
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button.secondary {
+            background: #95a5a6;
+        }
+
+        button.secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .feedback-box {
+            background: #e8f8f5;
+            border-left: 4px solid #2ecc71;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback-box.show {
+            display: block;
+        }
+
+        /* Vocabulary Section */
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .vocab-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #9b59b6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .vocab-term {
+            font-weight: bold;
+            color: #8e44ad;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        .vocab-definition {
+            color: #555;
+            margin-bottom: 8px;
+        }
+
+        .vocab-importance {
+            color: #7f8c8d;
+            font-style: italic;
+            font-size: 0.9em;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 8px;
+            margin-top: 8px;
+        }
+
+        /* YouTube Resources */
+        .youtube-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .youtube-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .youtube-card h4 {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        .youtube-link {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .youtube-link:hover {
+            background: #c0392b;
+        }
+
+        /* Salary Table */
+        .salary-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .salary-table th,
+        .salary-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .salary-table th {
+            background: #34495e;
+            color: white;
+            font-weight: 600;
+        }
+
+        .salary-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Certification Cards */
+        .cert-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .cert-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-top: 4px solid #27ae60;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .cert-card h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .cert-level {
+            display: inline-block;
+            background: #ecf0f1;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* Resume Upload */
+        .upload-area {
+            background: white;
+            border: 3px dashed #3498db;
+            border-radius: 12px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            border-color: #2980b9;
+            background: #f8f9fa;
+        }
+
+        .upload-area input[type="file"] {
+            display: none;
+        }
+
+        /* Scenario Box */
+        .scenario-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #e67e22;
+        }
+
+        .scenario-title {
+            color: #d35400;
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        /* Interview Questions */
+        .interview-question {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .question-difficulty {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-easy {
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .difficulty-medium {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .difficulty-hard {
+            background: #f8d7da;
+            color: #e74c3c;
+        }
+
+        .checkbox-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            color: #0c5460;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            color: #155724;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-tab {
+                padding: 6px 10px;
+                font-size: 11px;
+            }
+            
+            .main-content {
+                padding-top: 280px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .skills-grid,
+            .vocab-grid,
+            .youtube-grid,
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+                padding: 8px 12px;
+            }
+
+            .nav-tab {
+                width: 100%;
+                text-align: center;
+                padding: 8px 10px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .main-content {
+                padding-top: 420px;
+            }
+
+            .header {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="fixed-top-wrapper">
+        <!-- Header with Progress Bar -->
+        <div class="header">
+            <h1>🚀 AI Prompt Engineer - Learning Journey</h1>
+            <div class="goal-timeline">
+                <strong>Goal:</strong> Career transition to AI Prompt Engineer by June 2026 | 
+                <strong>Current Role:</strong> ESL Teacher & AI Graduate Student
+            </div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar">
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-text" id="progressText"></div>
+            </div>
+            <p style="margin-top: 10px; font-size: 0.9em; color: #7f8c8d;">
+                <span id="completedSections">0</span> of <span id="totalSections">0</span> sections completed
+            </p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" onclick="showSection('skills')">📚 Core Skills</div>
+            <div class="nav-tab" onclick="showSection('vocabulary')">📖 Vocabulary (40+ Terms)</div>
+            <div class="nav-tab" onclick="showSection('practice')">💪 Practice Scenarios</div>
+            <div class="nav-tab" onclick="showSection('interview')">🎯 Interview Prep</div>
+            <div class="nav-tab" onclick="showSection('youtube')">🎥 YouTube Resources</div>
+            <div class="nav-tab" onclick="showSection('resume')">📄 Resume Analysis</div>
+            <div class="nav-tab" onclick="showSection('market')">💼 Job Market & Salaries</div>
+            <div class="nav-tab" onclick="showSection('certifications')">🏆 Certifications</div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+
+        <!-- CORE SKILLS SECTION -->
+        <div class="content-section active" id="skills">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Core Skills for AI Prompt Engineers</h2>
+            
+            <div class="skills-grid">
+                <!-- Communication & Language -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        💬 Communication & Language
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> As a prompt engineer, you're translating complex technical requirements into instructions that AI models can understand. Your ESL teaching background is perfect for this - you already know how to break down complex ideas and adapt your communication style!</p>
+                        
+                        <p><strong>Real-World Example:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Scenario:</em> A customer service team needs a chatbot that handles product returns.<br>
+                            <em>Your Role:</em> You write a prompt that instructs the AI to be empathetic, ask for order details, explain the 30-day policy, and escalate complex cases to humans.<br>
+                            <em>Key Skill:</em> Clear documentation ensures the whole team understands how the bot works.
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Clear & Precise Prompts:</strong> Every word matters - vague instructions lead to unpredictable AI responses</li>
+                            <li><strong>Documentation:</strong> Record what works, what doesn't, and why - this becomes your knowledge base</li>
+                            <li><strong>Audience Adaptation:</strong> Explain your work to developers (technical), managers (ROI-focused), and end-users (simple)</li>
+                        </ul>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Write a prompt that explains "transformer architecture" to three different audiences: a 10-year-old, a business executive, and a software engineer.</p>
+                            <textarea id="comm-practice" placeholder="Your response here..."></textarea>
+                            <button onclick="checkPractice('comm-practice', 'comm-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="comm-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI & LLM Understanding -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        🤖 AI & LLM Understanding
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> Understanding how AI models work helps you craft better prompts and troubleshoot issues. Think of it like knowing how a student's brain works helps you teach more effectively!</p>
+                        
+                        <p><strong>Real-World Example:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Scenario:</em> You're building a math tutoring bot for students.<br>
+                            <em>Challenge:</em> The AI sometimes gives answers without showing work.<br>
+                            <em>Solution:</em> Use <strong>chain-of-thought prompting</strong> - instruct the AI: "Solve step-by-step: 1) First... 2) Then... 3) Finally..."<br>
+                            <em>Result:</em> Students see the reasoning process, not just the answer!
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Context Windows:</strong> The amount of text an AI can process at once (measured in tokens). GPT-4 handles ~128,000 tokens ≈ 100 pages!</li>
+                            <li><strong>Temperature Settings:</strong> Controls randomness (0 = factual/consistent, 1 = creative/varied). Use 0.2 for customer service, 0.8 for creative writing.</li>
+                            <li><strong>Token Limits:</strong> Maximum input/output constraints. Important for cost control - each token costs money!</li>
+                            <li><strong>Chain-of-Thought:</strong> Breaking reasoning into steps. Example: "Let's solve this step by step: First... Then... Finally..."</li>
+                            <li><strong>Few-Shot Prompting:</strong> Provide 2-5 examples showing desired format. Like giving students sample problems before a test!</li>
+                            <li><strong>Zero-Shot Prompting:</strong> Just instructions, no examples. Works for simple tasks: "Translate this to Spanish: [text]"</li>
+                        </ul>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Create a chain-of-thought prompt that asks an AI to solve: "A store has 150 shirts. If 30% are blue, 25% are red, and the rest are white, how many white shirts are there?"</p>
+                            <textarea id="llm-practice" placeholder="Write your chain-of-thought prompt..."></textarea>
+                            <button onclick="checkPractice('llm-practice', 'llm-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="llm-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Technical Skills -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        💻 Technical Skills
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> Prompt engineering isn't just writing - it's programming with natural language. Basic coding skills let you automate repetitive tasks and integrate AI into real applications.</p>
+                        
+                        <p><strong>Real-World Example:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Scenario:</em> Your company gets 500 customer emails daily asking common questions.<br>
+                            <em>Your Solution:</em> Write a Python script that:<br>
+                            • Reads incoming emails from a folder<br>
+                            • Sends each to the AI via API with your carefully crafted prompt<br>
+                            • Gets response in JSON format<br>
+                            • Saves to a spreadsheet for review<br>
+                            <em>Impact:</em> What took 10 hours now takes 10 minutes!
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Python Programming:</strong> You don't need to be an expert! Learn basics: variables, loops, functions, API calls. Think of it as giving step-by-step instructions to a very literal assistant.</li>
+                            <li><strong>JSON Format:</strong> How data travels between systems. Example: {"name": "Alex", "role": "Prompt Engineer"} - it's just organized information!</li>
+                            <li><strong>RESTful APIs:</strong> How to send requests to AI services and get responses. Like ordering food online - you send an order (prompt), get food back (response).</li>
+                            <li><strong>Git & GitHub:</strong> Save versions of your work, collaborate with teams, build your portfolio. Every company uses this!</li>
+                        </ul>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Write pseudocode or actual Python code to make an API call to an AI service, send a prompt, and handle the response.</p>
+                            <textarea id="tech-practice" placeholder="Your code here..." style="font-family: monospace;"></textarea>
+                            <button onclick="checkPractice('tech-practice', 'tech-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="tech-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Evaluation & Testing -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        🔍 Evaluation & Testing
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> You can't improve what you don't measure. Testing ensures your prompts work consistently and safely across thousands of users. Your teaching experience with assessments translates perfectly here!</p>
+                        
+                        <p><strong>Real-World Example:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Scenario:</em> You create a hiring assistant prompt that screens resumes.<br>
+                            <em>Testing Process:</em><br>
+                            • Run 100 diverse resumes (various backgrounds, genders, ages)<br>
+                            • Check: Does it favor certain demographics? (Bias detection)<br>
+                            • Measure: Are qualified candidates ranked higher? (Quality metrics)<br>
+                            • Iterate: Adjust prompt based on results<br>
+                            <em>Why Critical:</em> Biased hiring AI can lead to lawsuits and damaged reputation!
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Systematic Testing:</strong> Like grading papers with a rubric - create standard test cases and evaluate consistently</li>
+                            <li><strong>Quality Metrics:</strong> Accuracy, relevance, consistency. Track improvements over time.</li>
+                            <li><strong>Bias Detection:</strong> Test with diverse inputs. Does the AI treat everyone fairly regardless of race, gender, age?</li>
+                            <li><strong>Responsible AI:</strong> Privacy (don't leak data), transparency (explain decisions), safety (prevent harmful outputs)</li>
+                        </ul>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Design a testing framework to evaluate whether a customer service chatbot prompt handles angry customers appropriately. List 5 test cases you would use.</p>
+                            <textarea id="eval-practice" placeholder="List your test cases..."></textarea>
+                            <button onclick="checkPractice('eval-practice', 'eval-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="eval-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Domain Expertise -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        🎓 Domain Expertise
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> AI needs domain knowledge to be useful. A healthcare chatbot must understand medical terms. Your ESL expertise is a MAJOR advantage for educational AI!</p>
+                        
+                        <p><strong>Real-World Example:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Scenario:</em> Language learning app needs an AI conversation partner.<br>
+                            <em>Your ESL Expertise Helps You:</em><br>
+                            • Identify common grammar mistakes (e.g., "I goed" vs "I went")<br>
+                            • Design prompts that correct without discouraging<br>
+                            • Adapt difficulty level based on student proficiency<br>
+                            • Create culturally appropriate examples<br>
+                            <em>Without Domain Knowledge:</em> The AI would give technical corrections that confuse beginners!
+                        </p>
+                        
+                        <ul>
+                            <li><strong>Healthcare:</strong> Medical terminology, patient privacy (HIPAA), empathetic communication</li>
+                            <li><strong>Finance:</strong> Compliance requirements, risk analysis, fraud detection</li>
+                            <li><strong>Customer Service:</strong> De-escalation techniques, brand voice, workflow understanding</li>
+                            <li><strong>Education (Your Strength!):</strong> Learning theory, assessment design, diverse learning styles, motivation techniques</li>
+                        </ul>
+                        
+                        <div class="alert alert-info">
+                            <strong>Your Advantage:</strong> As an ESL teacher, you have deep expertise in education, language learning, and adapting content for different comprehension levels. This is highly valuable for educational AI applications!
+                        </div>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Create a prompt for an AI tutor that helps ESL students practice past tense verbs. The prompt should adapt to student errors and provide encouraging feedback.</p>
+                            <textarea id="domain-practice" placeholder="Your educational AI prompt..."></textarea>
+                            <button onclick="checkPractice('domain-practice', 'domain-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="domain-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Technical Skills -->
+                <div class="skill-card">
+                    <h3 onclick="toggleDropdown(this)">
+                        🚀 Advanced Technical Skills
+                        <span class="dropdown-icon">▼</span>
+                    </h3>
+                    <div class="skill-content">
+                        <p><strong>Why This Matters:</strong> These skills separate senior engineers from juniors. Master these and you'll command higher salaries and work on cutting-edge projects.</p>
+                        
+                        <p><strong>Real-World Example - RAG System:</strong></p>
+                        <p style="background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0;">
+                            <em>Problem:</em> Company has 10,000 product manuals. AI can't memorize them all.<br>
+                            <em>RAG Solution:</em><br>
+                            1. User asks: "How do I reset Model X500?"<br>
+                            2. System searches manuals for relevant sections (Retrieval)<br>
+                            3. Feeds those sections to AI with your prompt (Augmentation)<br>
+                            4. AI generates answer based on actual manual (Generation)<br>
+                            <em>Result:</em> Always accurate, always up-to-date, no hallucinations!
+                        </p>
+                        
+                        <ul>
+                            <li><strong>RAG (Retrieval-Augmented Generation):</strong> Combine AI with searchable databases. AI stays current without retraining!</li>
+                            <li><strong>Data Annotation:</strong> Label training data to improve models. Example: Mark which customer reviews are positive/negative.</li>
+                            <li><strong>Evaluation Frameworks:</strong> BLEU scores (translation quality), ROUGE (summary quality), custom rubrics for your specific use case</li>
+                            <li><strong>Fine-tuning:</strong> Customize models for specific tasks. Like training a student - general knowledge + specialized practice</li>
+                        </ul>
+                        
+                        <div class="practice-box">
+                            <h4>Practice Exercise:</h4>
+                            <p>Describe a scenario where RAG would be beneficial. For example, how would you use RAG to create a company knowledge base chatbot?</p>
+                            <textarea id="advanced-practice" placeholder="Describe your RAG use case..."></textarea>
+                            <button onclick="checkPractice('advanced-practice', 'advanced-feedback')">Analyze My Response</button>
+                            <div class="feedback-box" id="advanced-feedback"></div>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" onchange="updateProgress()"> I've completed this practice
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- VOCABULARY SECTION -->
+        <div class="content-section" id="vocabulary">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Essential AI Prompt Engineering Vocabulary</h2>
+            <p style="margin-bottom: 20px;">Master these 40+ terms to communicate effectively in the AI field:</p>
+            
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <div class="vocab-term">1. Prompt</div>
+                    <div class="vocab-definition">The input text or instructions given to an AI model to generate a response.</div>
+                    <div class="vocab-importance">Why it matters: This is the foundation of your role—crafting effective prompts is your primary skill.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">2. Token</div>
+                    <div class="vocab-definition">A unit of text (can be a word, part of a word, or punctuation) that AI models process.</div>
+                    <div class="vocab-importance">Why it matters: Understanding tokens helps you work within model limits and optimize costs.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">3. Context Window</div>
+                    <div class="vocab-definition">The maximum amount of text (in tokens) an AI model can process at once, including both input and output.</div>
+                    <div class="vocab-importance">Why it matters: Determines how much information you can include in your prompts and conversations.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">4. Temperature</div>
+                    <div class="vocab-definition">A parameter (0-2) controlling randomness in AI outputs; low values give consistent results, high values give creative/varied results.</div>
+                    <div class="vocab-importance">Why it matters: Essential for controlling output style—factual vs. creative content.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">5. Zero-Shot Learning</div>
+                    <div class="vocab-definition">Getting an AI to perform a task without providing examples, relying only on instructions.</div>
+                    <div class="vocab-importance">Why it matters: Most efficient prompting method when the task is straightforward.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">6. Few-Shot Learning</div>
+                    <div class="vocab-definition">Providing a few examples in your prompt to guide the AI's responses.</div>
+                    <div class="vocab-importance">Why it matters: Dramatically improves output quality for complex or specific tasks.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">7. Chain-of-Thought (CoT)</div>
+                    <div class="vocab-definition">A prompting technique that encourages AI to show step-by-step reasoning.</div>
+                    <div class="vocab-importance">Why it matters: Improves accuracy on complex reasoning tasks and makes outputs explainable.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">8. Hallucination</div>
+                    <div class="vocab-definition">When an AI generates false or nonsensical information presented as fact.</div>
+                    <div class="vocab-importance">Why it matters: A critical limitation you must understand and mitigate in production systems.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">9. Fine-tuning</div>
+                    <div class="vocab-definition">Training an existing AI model on specific data to specialize it for particular tasks.</div>
+                    <div class="vocab-importance">Why it matters: Advanced technique for creating domain-specific AI solutions.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">10. Embeddings</div>
+                    <div class="vocab-definition">Mathematical representations of text that capture semantic meaning, used for similarity searches.</div>
+                    <div class="vocab-importance">Why it matters: Foundation for semantic search and RAG systems.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">11. RAG (Retrieval-Augmented Generation)</div>
+                    <div class="vocab-definition">A technique that combines AI generation with searching external knowledge bases for up-to-date information.</div>
+                    <div class="vocab-importance">Why it matters: Solves the hallucination problem by grounding AI in real data.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">12. API (Application Programming Interface)</div>
+                    <div class="vocab-definition">A set of protocols that allows different software applications to communicate with each other.</div>
+                    <div class="vocab-importance">Why it matters: How you'll interact with AI models programmatically in production.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">13. Latency</div>
+                    <div class="vocab-definition">The time delay between sending a request to an AI model and receiving a response.</div>
+                    <div class="vocab-importance">Why it matters: Critical for user experience in real-time applications.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">14. Bias</div>
+                    <div class="vocab-definition">Systematic prejudices in AI outputs, often reflecting biases in training data.</div>
+                    <div class="vocab-importance">Why it matters: Ethical responsibility and quality assurance in AI systems.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">15. System Prompt</div>
+                    <div class="vocab-definition">Initial instructions that set the AI's behavior, tone, and constraints for all subsequent interactions.</div>
+                    <div class="vocab-importance">Why it matters: The foundation for creating consistent AI personalities and behaviors.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">16. User Prompt</div>
+                    <div class="vocab-definition">The specific question or instruction from the end user that the AI responds to.</div>
+                    <div class="vocab-importance">Why it matters: Distinguishes between setup instructions and user queries.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">17. JSON (JavaScript Object Notation)</div>
+                    <div class="vocab-definition">A lightweight data format used for structuring information in API requests and responses.</div>
+                    <div class="vocab-importance">Why it matters: Standard format for AI API communication.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">18. LLM (Large Language Model)</div>
+                    <div class="vocab-definition">AI models trained on vast amounts of text data to understand and generate human-like text.</div>
+                    <div class="vocab-importance">Why it matters: The core technology you'll be working with daily.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">19. Transformer</div>
+                    <div class="vocab-definition">The neural network architecture that powers modern LLMs, using attention mechanisms.</div>
+                    <div class="vocab-importance">Why it matters: Understanding the underlying technology helps you use it more effectively.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">20. Attention Mechanism</div>
+                    <div class="vocab-definition">The way transformers decide which parts of input text to focus on when generating outputs.</div>
+                    <div class="vocab-importance">Why it matters: Explains why context and prompt structure matter so much.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">21. Inference</div>
+                    <div class="vocab-definition">The process of using a trained model to generate predictions or responses.</div>
+                    <div class="vocab-importance">Why it matters: What happens every time you send a prompt to an AI.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">22. Tokenization</div>
+                    <div class="vocab-definition">The process of breaking text into tokens that the model can understand.</div>
+                    <div class="vocab-importance">Why it matters: Affects how models interpret your prompts and count usage.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">23. Top-p (Nucleus Sampling)</div>
+                    <div class="vocab-definition">A parameter that controls output diversity by selecting from the most probable tokens.</div>
+                    <div class="vocab-importance">Why it matters: Another tool for controlling output creativity and consistency.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">24. BLEU Score</div>
+                    <div class="vocab-definition">A metric for evaluating AI-generated text quality by comparing it to reference texts.</div>
+                    <div class="vocab-importance">Why it matters: Standard evaluation metric you'll use to assess prompt performance.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">25. Perplexity</div>
+                    <div class="vocab-definition">A measure of how well a model predicts text; lower is better.</div>
+                    <div class="vocab-importance">Why it matters: Technical metric for model quality evaluation.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">26. Prompt Engineering</div>
+                    <div class="vocab-definition">The practice of designing and refining prompts to achieve desired AI outputs.</div>
+                    <div class="vocab-importance">Why it matters: This is literally your job title!</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">27. Instruction Tuning</div>
+                    <div class="vocab-definition">Training models to follow instructions more effectively.</div>
+                    <div class="vocab-importance">Why it matters: Explains why modern models like GPT-4 follow instructions better than earlier versions.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">28. RLHF (Reinforcement Learning from Human Feedback)</div>
+                    <div class="vocab-definition">A training method that uses human preferences to align AI behavior with desired outcomes.</div>
+                    <div class="vocab-importance">Why it matters: How models learn to be helpful, harmless, and honest.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">29. Prompt Injection</div>
+                    <div class="vocab-definition">A security vulnerability where malicious users manipulate prompts to bypass restrictions.</div>
+                    <div class="vocab-importance">Why it matters: Critical security concern you must design against.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">30. Grounding</div>
+                    <div class="vocab-definition">Anchoring AI responses to verified information or data sources.</div>
+                    <div class="vocab-importance">Why it matters: Key technique for reducing hallucinations and improving accuracy.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">31. Vector Database</div>
+                    <div class="vocab-definition">A database optimized for storing and searching embeddings for semantic similarity.</div>
+                    <div class="vocab-importance">Why it matters: Essential infrastructure for RAG systems.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">32. Semantic Search</div>
+                    <div class="vocab-definition">Search based on meaning rather than exact keyword matching.</div>
+                    <div class="vocab-importance">Why it matters: Powers modern information retrieval in AI systems.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">33. Multi-Modal</div>
+                    <div class="vocab-definition">AI systems that can process multiple types of input (text, images, audio).</div>
+                    <div class="vocab-importance">Why it matters: Expanding frontier of AI capabilities you may work with.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">34. Prompt Template</div>
+                    <div class="vocab-definition">A reusable prompt structure with placeholders for variable information.</div>
+                    <div class="vocab-importance">Why it matters: Efficiency tool for consistent, scalable prompt engineering.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">35. Agent</div>
+                    <div class="vocab-definition">An AI system that can take actions, use tools, and work autonomously toward goals.</div>
+                    <div class="vocab-importance">Why it matters: Next evolution of AI applications beyond simple Q&A.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">36. Tool Use (Function Calling)</div>
+                    <div class="vocab-definition">AI's ability to invoke external functions, APIs, or tools to complete tasks.</div>
+                    <div class="vocab-importance">Why it matters: Enables AI to interact with real-world systems and data.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">37. Prompt Chaining</div>
+                    <div class="vocab-definition">Breaking complex tasks into a sequence of simpler prompts.</div>
+                    <div class="vocab-importance">Why it matters: Technique for handling tasks too complex for a single prompt.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">38. Few-Shot Example</div>
+                    <div class="vocab-definition">A demonstration of the desired input-output pattern included in a prompt.</div>
+                    <div class="vocab-importance">Why it matters: Dramatically improves AI performance on specific tasks.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">39. Delimiter</div>
+                    <div class="vocab-definition">Special characters or markers used to separate different parts of a prompt.</div>
+                    <div class="vocab-importance">Why it matters: Helps models distinguish between instructions and content.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">40. Output Parsing</div>
+                    <div class="vocab-definition">Extracting structured data from AI-generated text responses.</div>
+                    <div class="vocab-importance">Why it matters: Essential for integrating AI into applications that need specific formats.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">41. Retrieval</div>
+                    <div class="vocab-definition">The process of finding relevant information from a knowledge base or database.</div>
+                    <div class="vocab-importance">Why it matters: The "R" in RAG—critical for knowledge-based AI applications.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">42. Chunking</div>
+                    <div class="vocab-definition">Breaking large documents into smaller segments for processing or embedding.</div>
+                    <div class="vocab-importance">Why it matters: Necessary for working with documents larger than the context window.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">43. Completion</div>
+                    <div class="vocab-definition">The text generated by an AI model in response to a prompt.</div>
+                    <div class="vocab-importance">Why it matters: The output you're engineering for with your prompts.</div>
+                </div>
+
+                <div class="vocab-card">
+                    <div class="vocab-term">44. Safety Filters</div>
+                    <div class="vocab-definition">Built-in mechanisms that prevent AI from generating harmful or inappropriate content.</div>
+                    <div class="vocab-importance">Why it matters: Important for responsible AI deployment and understanding model limitations.</div>
+                </div>
+            </div>
+
+            <div class="checkbox-item" style="margin-top: 20px;">
+                <input type="checkbox" onchange="updateProgress()"> I've reviewed and understand all vocabulary terms
+            </div>
+        </div>
+
+        <!-- PRACTICE SCENARIOS SECTION -->
+        <div class="content-section" id="practice">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Real-World Practice Scenarios</h2>
+            <p style="margin-bottom: 20px;">Work through these scenarios to build practical skills. Generate your own prompts and get feedback!</p>
+
+            <!-- Scenario 1 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 1: Customer Service Chatbot</div>
+                <p><strong>Context:</strong> You're building a chatbot for an online electronics store. The bot needs to handle product inquiries, troubleshooting, and returns.</p>
+                <p><strong>Your Task:</strong> Create a system prompt that ensures the chatbot is helpful, empathetic, and follows company policy (30-day returns, warranty info required for troubleshooting).</p>
+                <textarea id="scenario1" placeholder="Write your system prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(1)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario1-feedback"></div>
+            </div>
+
+            <!-- Scenario 2 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 2: Content Summarization</div>
+                <p><strong>Context:</strong> Your company receives hundreds of customer reviews daily. You need to create a prompt that summarizes reviews into key themes (positive, negative, suggestions).</p>
+                <p><strong>Your Task:</strong> Write a prompt that will consistently extract structured insights from customer reviews, handling both short and long reviews.</p>
+                <textarea id="scenario2" placeholder="Write your summarization prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(2)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario2-feedback"></div>
+            </div>
+
+            <!-- Scenario 3 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 3: Educational Content Generation</div>
+                <p><strong>Context:</strong> You're developing an AI tutor for high school math students. The AI should explain concepts, provide examples, and adapt to student understanding.</p>
+                <p><strong>Your Task:</strong> Create a prompt that teaches the quadratic formula, includes a step-by-step example, and asks a practice question to check understanding.</p>
+                <textarea id="scenario3" placeholder="Write your educational prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(3)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario3-feedback"></div>
+            </div>
+
+            <!-- Scenario 4 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 4: Data Extraction</div>
+                <p><strong>Context:</strong> You need to extract structured information from unstructured text (e.g., extracting name, email, phone, and inquiry type from customer messages).</p>
+                <p><strong>Your Task:</strong> Write a prompt that extracts contact information and categorizes the inquiry, outputting results in JSON format.</p>
+                <textarea id="scenario4" placeholder="Write your data extraction prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(4)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario4-feedback"></div>
+            </div>
+
+            <!-- Scenario 5 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 5: Code Generation Assistant</div>
+                <p><strong>Context:</strong> You're building a coding assistant for junior developers learning Python. It should explain concepts, provide code examples, and follow best practices.</p>
+                <p><strong>Your Task:</strong> Create a prompt that helps a user write a function to validate email addresses using regex, including error handling.</p>
+                <textarea id="scenario5" placeholder="Write your code assistant prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(5)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario5-feedback"></div>
+            </div>
+
+            <!-- Scenario 6 -->
+            <div class="scenario-box">
+                <div class="scenario-title">Scenario 6: Bias Detection and Mitigation</div>
+                <p><strong>Context:</strong> You're reviewing AI outputs for a hiring tool and notice potential gender bias in job description generation.</p>
+                <p><strong>Your Task:</strong> Write a prompt that generates inclusive job descriptions, avoiding gendered language and promoting diversity.</p>
+                <textarea id="scenario6" placeholder="Write your inclusive job description prompt here..." rows="6"></textarea>
+                <button onclick="analyzeScenario(6)">Analyze My Response</button>
+                <div class="feedback-box" id="scenario6-feedback"></div>
+            </div>
+
+            <div class="checkbox-item">
+                <input type="checkbox" onchange="updateProgress()"> I've completed all practice scenarios
+            </div>
+        </div>
+
+        <!-- INTERVIEW PREP SECTION -->
+        <div class="content-section" id="interview">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Interview Preparation</h2>
+            <p style="margin-bottom: 20px;">Practice common interview questions for AI Prompt Engineer roles:</p>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-easy">Easy</span>
+                <h4>1. What is prompt engineering, and why is it important?</h4>
+                <textarea id="interview1" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(1)">Get Feedback</button>
+                <div class="feedback-box" id="interview1-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-easy">Easy</span>
+                <h4>2. Explain the difference between zero-shot and few-shot prompting.</h4>
+                <textarea id="interview2" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(2)">Get Feedback</button>
+                <div class="feedback-box" id="interview2-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-medium">Medium</span>
+                <h4>3. How would you handle an AI model that's producing biased outputs?</h4>
+                <textarea id="interview3" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(3)">Get Feedback</button>
+                <div class="feedback-box" id="interview3-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-medium">Medium</span>
+                <h4>4. Describe a situation where you would use chain-of-thought prompting.</h4>
+                <textarea id="interview4" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(4)">Get Feedback</button>
+                <div class="feedback-box" id="interview4-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-medium">Medium</span>
+                <h4>5. What is RAG (Retrieval-Augmented Generation), and when would you use it?</h4>
+                <textarea id="interview5" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(5)">Get Feedback</button>
+                <div class="feedback-box" id="interview5-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-hard">Hard</span>
+                <h4>6. How would you evaluate the effectiveness of a prompt for a production system?</h4>
+                <textarea id="interview6" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(6)">Get Feedback</button>
+                <div class="feedback-box" id="interview6-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-hard">Hard</span>
+                <h4>7. Walk me through how you would design a prompt system for a multi-turn conversation application.</h4>
+                <textarea id="interview7" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(7)">Get Feedback</button>
+                <div class="feedback-box" id="interview7-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-hard">Hard</span>
+                <h4>8. Explain how you would prevent prompt injection attacks in a user-facing application.</h4>
+                <textarea id="interview8" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(8)">Get Feedback</button>
+                <div class="feedback-box" id="interview8-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-medium">Medium</span>
+                <h4>9. Behavioral: Describe a time when you had to adapt your communication for a different audience.</h4>
+                <p style="font-size: 0.9em; color: #7f8c8d; margin-top: 5px;">Hint: Draw from your ESL teaching experience!</p>
+                <textarea id="interview9" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(9)">Get Feedback</button>
+                <div class="feedback-box" id="interview9-feedback"></div>
+            </div>
+
+            <div class="interview-question">
+                <span class="question-difficulty difficulty-medium">Medium</span>
+                <h4>10. Technical: If you had to integrate an AI API into a Python application, what steps would you take?</h4>
+                <textarea id="interview10" placeholder="Your answer here..." rows="4"></textarea>
+                <button onclick="reviewAnswer(10)">Get Feedback</button>
+                <div class="feedback-box" id="interview10-feedback"></div>
+            </div>
+
+            <div class="checkbox-item">
+                <input type="checkbox" onchange="updateProgress()"> I've practiced all interview questions
+            </div>
+        </div>
+
+        <!-- YOUTUBE RESOURCES SECTION -->
+        <div class="content-section" id="youtube">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">YouTube Learning Resources</h2>
+            <p style="margin-bottom: 20px;">Curated video playlists to master each skill:</p>
+
+            <div class="youtube-grid">
+                <div class="youtube-card">
+                    <h4>Prompt Engineering Fundamentals</h4>
+                    <p>Learn the basics of crafting effective prompts</p>
+                    <a href="https://www.youtube.com/results?search_query=prompt+engineering+tutorial+beginners" target="_blank" class="youtube-link">Watch Tutorials</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Understanding Large Language Models</h4>
+                    <p>Deep dive into how LLMs work</p>
+                    <a href="https://www.youtube.com/results?search_query=large+language+models+explained" target="_blank" class="youtube-link">Watch Videos</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Python for AI & APIs</h4>
+                    <p>Python programming for AI integration</p>
+                    <a href="https://www.youtube.com/results?search_query=python+api+tutorial+beginners" target="_blank" class="youtube-link">Start Learning</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Chain-of-Thought Prompting</h4>
+                    <p>Advanced prompting techniques</p>
+                    <a href="https://www.youtube.com/results?search_query=chain+of+thought+prompting" target="_blank" class="youtube-link">Explore CoT</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>RAG Systems Explained</h4>
+                    <p>Retrieval-Augmented Generation tutorials</p>
+                    <a href="https://www.youtube.com/results?search_query=RAG+retrieval+augmented+generation+tutorial" target="_blank" class="youtube-link">Learn RAG</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>AI Bias & Ethics</h4>
+                    <p>Responsible AI practices</p>
+                    <a href="https://www.youtube.com/results?search_query=AI+bias+detection+ethics" target="_blank" class="youtube-link">Study Ethics</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Git & GitHub Basics</h4>
+                    <p>Version control for your projects</p>
+                    <a href="https://www.youtube.com/results?search_query=git+github+tutorial+beginners" target="_blank" class="youtube-link">Master Git</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>JSON & Data Structures</h4>
+                    <p>Understanding data formats for AI</p>
+                    <a href="https://www.youtube.com/results?search_query=JSON+tutorial+beginners" target="_blank" class="youtube-link">Learn JSON</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>OpenAI API Tutorial</h4>
+                    <p>Hands-on API integration</p>
+                    <a href="https://www.youtube.com/results?search_query=OpenAI+API+tutorial+python" target="_blank" class="youtube-link">API Practice</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Building AI Agents</h4>
+                    <p>Advanced AI application development</p>
+                    <a href="https://www.youtube.com/results?search_query=AI+agents+tutorial" target="_blank" class="youtube-link">Build Agents</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>Prompt Evaluation Methods</h4>
+                    <p>Testing and measuring prompt quality</p>
+                    <a href="https://www.youtube.com/results?search_query=AI+prompt+evaluation+testing" target="_blank" class="youtube-link">Learn Testing</a>
+                </div>
+
+                <div class="youtube-card">
+                    <h4>AI for Education</h4>
+                    <p>Applying AI in learning contexts</p>
+                    <a href="https://www.youtube.com/results?search_query=AI+education+applications" target="_blank" class="youtube-link">Education AI</a>
+                </div>
+            </div>
+
+            <div class="checkbox-item" style="margin-top: 20px;">
+                <input type="checkbox" onchange="updateProgress()"> I've explored YouTube resources for my learning
+            </div>
+        </div>
+
+        <!-- RESUME ANALYSIS SECTION -->
+        <div class="content-section" id="resume">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Resume Analysis & Optimization</h2>
+            <p style="margin-bottom: 20px;">Upload your resume for AI-powered analysis and suggestions:</p>
+
+            <div class="upload-area" onclick="document.getElementById('resumeUpload').click()">
+                <h3>📄 Click to Upload Your Resume</h3>
+                <p>Supported formats: PDF, DOC, DOCX</p>
+                <input type="file" id="resumeUpload" accept=".pdf,.doc,.docx" onchange="analyzeResume(this)">
+            </div>
+
+            <div id="resumeAnalysis" style="margin-top: 30px; display: none;">
+                <div class="alert alert-success">
+                    <h3>✅ Resume Analysis Complete</h3>
+                </div>
+
+                <div class="skill-card" style="margin-top: 20px;">
+                    <h3>Key Recommendations:</h3>
+                    <ul style="margin-top: 15px;">
+                        <li><strong>Highlight Your Unique Value:</strong> Emphasize your ESL teaching background as a strength. Example: "Experienced in breaking down complex concepts for diverse audiences—a core skill in prompt engineering."</li>
+                        <li><strong>Quantify Your Impact:</strong> Add metrics from teaching (e.g., "Improved student language proficiency by 40% through adaptive learning techniques").</li>
+                        <li><strong>Technical Skills Section:</strong> List Python, Git/GitHub, JSON, API integration, and any AI tools you've used.</li>
+                        <li><strong>Projects Section:</strong> Create a portfolio showcasing 3-5 prompt engineering projects. Include:
+                            <ul style="margin-left: 20px; margin-top: 10px;">
+                                <li>Problem statement</li>
+                                <li>Your prompt solution</li>
+                                <li>Results/outcomes</li>
+                                <li>GitHub link</li>
+                            </ul>
+                        </li>
+                        <li><strong>Education:</strong> Highlight your graduate studies in Applied AI prominently—this is a major credential.</li>
+                        <li><strong>Action Verbs:</strong> Use strong verbs like "Engineered," "Optimized," "Designed," "Implemented," "Evaluated."</li>
+                        <li><strong>Keywords for ATS:</strong> Include: Prompt Engineering, LLM, GPT, API Integration, Python, RAG, Few-Shot Learning, Chain-of-Thought, Model Evaluation.</li>
+                        <li><strong>Summary Statement:</strong> Example: "AI graduate student and ESL educator transitioning to AI Prompt Engineering. Combines technical AI knowledge with proven ability to adapt communication for diverse audiences and complex problem-solving."</li>
+                    </ul>
+                </div>
+
+                <div class="skill-card" style="margin-top: 20px;">
+                    <h3>Resume Template for AI Prompt Engineers:</h3>
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-top: 15px; font-family: monospace; font-size: 0.9em;">
+                        <strong>[Your Name]</strong><br>
+                        [City, State] | [Email] | [LinkedIn] | [GitHub]<br><br>
+                        
+                        <strong>PROFESSIONAL SUMMARY</strong><br>
+                        AI Prompt Engineer with expertise in LLM optimization and educational technology. Graduate student in Applied AI with 5+ years experience in ESL education, specializing in adapting complex concepts for diverse audiences.<br><br>
+                        
+                        <strong>TECHNICAL SKILLS</strong><br>
+                        • AI/ML: Prompt Engineering, LLMs (GPT-4, Claude), RAG Systems, Model Evaluation<br>
+                        • Programming: Python, API Integration, JSON<br>
+                        • Tools: Git/GitHub, OpenAI API, Vector Databases<br>
+                        • Techniques: Chain-of-Thought, Few-Shot Learning, Bias Detection<br><br>
+                        
+                        <strong>EDUCATION</strong><br>
+                        Master of Science in Applied Artificial Intelligence (In Progress)<br>
+                        [University Name] | Expected Graduation: [Date]<br><br>
+                        
+                        <strong>PROJECTS</strong><br>
+                        <strong>AI Tutoring Assistant</strong> | [GitHub Link]<br>
+                        • Engineered adaptive prompts for personalized ESL learning<br>
+                        • Implemented chain-of-thought reasoning for grammar explanations<br>
+                        • Achieved 90% student satisfaction rate<br><br>
+                        
+                        <strong>EXPERIENCE</strong><br>
+                        <strong>ESL High School Teacher</strong> | [School] | [Dates]<br>
+                        • Adapted curriculum for 150+ students across 5 proficiency levels<br>
+                        • Developed assessment frameworks to measure learning outcomes<br>
+                        • Demonstrated ability to simplify complex language concepts<br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info" style="margin-top: 20px;">
+                <strong>💡 Pro Tip:</strong> Tailor your resume for each application. Research the company and include relevant keywords from the job description.
+            </div>
+
+            <div class="checkbox-item">
+                <input type="checkbox" onchange="updateProgress()"> I've optimized my resume using these guidelines
+            </div>
+        </div>
+
+        <!-- JOB MARKET & SALARIES SECTION -->
+        <div class="content-section" id="market">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Job Market Analysis & Salary Ranges</h2>
+            <p style="margin-bottom: 20px;">Salary data for remote AI Prompt Engineer positions in your target markets (2024-2026):</p>
+
+            <table class="salary-table">
+                <thead>
+                    <tr>
+                        <th>City/Market</th>
+                        <th>Entry-Level Range</th>
+                        <th>Mid-Level Range</th>
+                        <th>Market Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Nashville, TN</strong></td>
+                        <td>$65,000 - $85,000</td>
+                        <td>$85,000 - $120,000</td>
+                        <td>Growing tech hub, strong healthcare AI sector</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Cincinnati, OH</strong></td>
+                        <td>$60,000 - $80,000</td>
+                        <td>$80,000 - $110,000</td>
+                        <td>Lower cost of living, emerging AI companies</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Atlanta, GA</strong></td>
+                        <td>$70,000 - $90,000</td>
+                        <td>$90,000 - $130,000</td>
+                        <td>Major tech hub, Fortune 500 presence</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dallas, TX</strong></td>
+                        <td>$70,000 - $95,000</td>
+                        <td>$95,000 - $135,000</td>
+                        <td>Rapidly growing tech scene, no state income tax</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Seattle, WA</strong></td>
+                        <td>$85,000 - $110,000</td>
+                        <td>$110,000 - $155,000</td>
+                        <td>Highest salaries, major AI companies (Microsoft, Amazon)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="skill-card" style="margin-top: 30px;">
+                <h3>💼 Remote Work Considerations</h3>
+                <ul>
+                    <li><strong>Location Adjustments:</strong> Some companies adjust salaries based on your location, even for remote roles</li>
+                    <li><strong>Benefits:</strong> Health insurance, 401k matching, professional development budgets typically add 20-30% to total compensation</li>
+                    <li><strong>Equity/Stock Options:</strong> Startup positions may offer lower salaries but significant equity</li>
+                    <li><strong>Contract vs. Full-Time:</strong> Contract roles ($50-100/hour) offer flexibility but fewer benefits</li>
+                </ul>
+            </div>
+
+            <div class="skill-card" style="margin-top: 20px;">
+                <h3>🎯 Top Companies Hiring AI Prompt Engineers</h3>
+                <ul>
+                    <li><strong>Tech Giants:</strong> Google, Microsoft, Amazon, Meta, Apple</li>
+                    <li><strong>AI-Focused:</strong> OpenAI, Anthropic, Cohere, Hugging Face</li>
+                    <li><strong>Startups:</strong> Scale AI, Jasper, Copy.ai, Adept</li>
+                    <li><strong>Consulting:</strong> Deloitte, Accenture, McKinsey (AI divisions)</li>
+                    <li><strong>Industry-Specific:</strong> Healthcare (Epic, Cerner), Finance (Bloomberg, JPMorgan)</li>
+                </ul>
+            </div>
+
+            <div class="alert alert-info" style="margin-top: 20px;">
+                <strong>📊 Salary Growth Potential:</strong> With 2-3 years of experience, AI Prompt Engineers can expect 15-25% annual salary growth as demand continues to outpace supply through 2026.
+            </div>
+
+            <div class="checkbox-item">
+                <input type="checkbox" onchange="updateProgress()"> I've researched salary expectations for my target markets
+            </div>
+        </div>
+
+        <!-- CERTIFICATIONS SECTION -->
+        <div class="content-section" id="certifications">
+            <h2 style="margin-top: 0; margin-bottom: 25px; color: #2c3e50;">Recommended Certifications</h2>
+            <p style="margin-bottom: 20px;">These certifications will strengthen your AI Prompt Engineer profile:</p>
+
+            <div class="cert-grid">
+                <div class="cert-card">
+                    <h4>🏅 OpenAI Prompt Engineering Certificate</h4>
+                    <p>Official certification covering GPT best practices, safety, and optimization techniques.</p>
+                    <p><strong>Cost:</strong> Free | <strong>Duration:</strong> 4-6 hours</p>
+                    <p><strong>Value:</strong> Industry-recognized, directly applicable to job roles</p>
+                    <span class="cert-level">Entry-Level</span>
+                    <a href="https://platform.openai.com/docs/guides/prompt-engineering" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #10a37f; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Start Learning →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 DeepLearning.AI - ChatGPT Prompt Engineering for Developers</h4>
+                    <p>Hands-on course by Andrew Ng covering practical prompt engineering skills.</p>
+                    <p><strong>Cost:</strong> Free | <strong>Duration:</strong> 1-2 hours</p>
+                    <p><strong>Value:</strong> Highly respected in industry, practical focus</p>
+                    <span class="cert-level">Entry-Level</span>
+                    <a href="https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0056d2; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Enroll Now →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 Google Cloud AI Platform Certification</h4>
+                    <p>Validates cloud-based AI deployment skills and ML engineering.</p>
+                    <p><strong>Cost:</strong> $200 | <strong>Duration:</strong> 40-60 hours prep</p>
+                    <p><strong>Value:</strong> Cloud skills are essential for production AI systems</p>
+                    <span class="cert-level">Intermediate</span>
+                    <a href="https://cloud.google.com/learn/certification/machine-learning-engineer" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #4285f4; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">View Certification →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 AWS Certified Machine Learning - Specialty</h4>
+                    <p>Comprehensive certification for ML on AWS, including AI services.</p>
+                    <p><strong>Cost:</strong> $300 | <strong>Duration:</strong> 60-80 hours prep</p>
+                    <p><strong>Value:</strong> Demonstrates cloud ML deployment expertise</p>
+                    <span class="cert-level">Intermediate</span>
+                    <a href="https://aws.amazon.com/certification/certified-machine-learning-specialty/" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #ff9900; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Get Certified →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 Microsoft Azure AI Engineer Associate</h4>
+                    <p>Azure-focused AI and cognitive services certification.</p>
+                    <p><strong>Cost:</strong> $165 | <strong>Duration:</strong> 40-50 hours prep</p>
+                    <p><strong>Value:</strong> Strong if targeting Microsoft-heavy companies</p>
+                    <span class="cert-level">Intermediate</span>
+                    <a href="https://learn.microsoft.com/en-us/certifications/azure-ai-engineer/" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0078d4; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Learn More →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 LangChain Certification</h4>
+                    <p>Specialization in building applications with LLMs using LangChain framework.</p>
+                    <p><strong>Cost:</strong> Free (courses) | <strong>Duration:</strong> 10-15 hours</p>
+                    <p><strong>Value:</strong> Emerging standard for LLM application development</p>
+                    <span class="cert-level">Intermediate</span>
+                    <a href="https://python.langchain.com/docs/get_started/introduction" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #1c3c3c; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Start Course →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 Hugging Face Certification (Upcoming)</h4>
+                    <p>Covers transformer models, fine-tuning, and deployment.</p>
+                    <p><strong>Cost:</strong> TBD | <strong>Duration:</strong> 20-30 hours</p>
+                    <p><strong>Value:</strong> Leading platform for open-source AI models</p>
+                    <span class="cert-level">Advanced</span>
+                    <a href="https://huggingface.co/learn" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #ff9d0b; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Explore Courses →</a>
+                </div>
+
+                <div class="cert-card">
+                    <h4>🏅 Responsible AI Practitioner Certificate</h4>
+                    <p>Focus on AI ethics, bias detection, and responsible deployment.</p>
+                    <p><strong>Cost:</strong> Varies | <strong>Duration:</strong> 15-20 hours</p>
+                    <p><strong>Value:</strong> Critical for senior roles and ethical AI leadership</p>
+                    <span class="cert-level">All Levels</span>
+                    <a href="https://www.coursera.org/learn/responsible-ai" target="_blank" style="display: inline-block; margin-top: 15px; padding: 10px 20px; background: #0056d2; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Enroll Here →</a>
+                </div>
+            </div>
+
+            <div class="alert alert-info" style="margin-top: 30px;">
+                <strong>🎯 Recommended Path:</strong> Start with free OpenAI and DeepLearning.AI courses. Then pursue one cloud certification (AWS, Azure, or GCP) based on job market demand in your target cities. Advanced certifications can wait until you're employed and have company support.
+            </div>
+
+            <div class="checkbox-item">
+                <input type="checkbox" onchange="updateProgress()"> I've planned my certification path
+            </div>
+        </div>
+    </div>
+    </div><!-- End main-content -->
+
+    <script>
+        // Wait for DOM to fully load before executing any code
+        document.addEventListener('DOMContentLoaded', function() {
+            // Progress tracking
+            let completedSections = 0;
+            let totalCheckboxes = 0;
+
+            function initializeProgress() {
+                totalCheckboxes = document.querySelectorAll('input[type="checkbox"]').length;
+                const totalSectionsEl = document.getElementById('totalSections');
+                if (totalSectionsEl) {
+                    totalSectionsEl.textContent = totalCheckboxes;
+                }
+            }
+
+            function updateProgress() {
+                const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                completedSections = checkboxes.length;
+                const percentage = totalCheckboxes > 0 ? Math.round((completedSections / totalCheckboxes) * 100) : 0;
+                
+                const progressBar = document.getElementById('progressBar');
+                const progressPercent = document.getElementById('progressPercent');
+                const completedSectionsEl = document.getElementById('completedSections');
+                const totalSectionsEl = document.getElementById('totalSections');
+                
+                if (progressBar) progressBar.style.width = percentage + '%';
+                if (progressPercent) progressPercent.textContent = percentage + '%';
+                if (completedSectionsEl) completedSectionsEl.textContent = completedSections;
+                if (totalSectionsEl) totalSectionsEl.textContent = totalCheckboxes;
+
+                // Save progress to localStorage
+                try {
+                    localStorage.setItem('aiLearningProgress', JSON.stringify({
+                        completed: completedSections,
+                        total: totalCheckboxes,
+                        percentage: percentage
+                    }));
+                } catch(e) {
+                    console.log('Could not save to localStorage:', e);
+                }
+            }
+
+            // Make updateProgress available globally
+            window.updateProgress = updateProgress;
+
+            // Initialize on page load
+            initializeProgress();
+
+            // Section navigation
+            window.showSection = function(sectionId) {
+                // Hide all sections
+                document.querySelectorAll('.content-section').forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                // Remove active class from all tabs
+                document.querySelectorAll('.nav-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                
+                // Show selected section
+                const section = document.getElementById(sectionId);
+                if (section) section.classList.add('active');
+                
+                // Add active class to clicked tab
+                if (event && event.target) {
+                    event.target.classList.add('active');
+                }
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Dropdown toggle
+            window.toggleDropdown = function(element) {
+                const content = element.nextElementSibling;
+                const icon = element.querySelector('.dropdown-icon');
+                
+                if (content) content.classList.toggle('open');
+                if (icon) icon.classList.toggle('open');
+            };
+
+            // Practice feedback
+            window.checkPractice = function(textareaId, feedbackId) {
+                const responseEl = document.getElementById(textareaId);
+                const feedback = document.getElementById(feedbackId);
+                
+                if (!responseEl || !feedback) return;
+                
+                const response = responseEl.value;
+                
+                if (!response.trim()) {
+                    feedback.innerHTML = '<p><strong>⚠️ Feedback:</strong> Please write your response before checking.</p>';
+                    feedback.classList.add('show');
+                    return;
+                }
+
+                let feedbackText = '';
+            
+            // Provide contextual feedback based on the exercise
+            if (textareaId === 'comm-practice') {
+                const wordCount = response.split(/\s+/).length;
+                const hasThreeVersions = (response.match(/10-year-old|child|kid/gi) && 
+                                         response.match(/executive|business|manager/gi) && 
+                                         response.match(/engineer|developer|technical/gi));
+                
+                feedbackText = `
+                    <p><strong>📊 Analysis of Your Response (${wordCount} words):</strong></p>
+                    
+                    <p><strong>✅ What to Evaluate in Your Response:</strong></p>
+                    <ul>
+                        <li><strong>Three Distinct Versions:</strong> ${hasThreeVersions ? '✓ Good! You addressed all three audiences.' : '⚠️ Make sure you have separate explanations for all three audiences.'}</li>
+                        <li><strong>For the 10-year-old:</strong> Did you use simple words, analogies (like building blocks or toy examples), and avoid jargon? Example: "It's like having a super smart robot friend that reads lots of books..."</li>
+                        <li><strong>For the Business Executive:</strong> Did you focus on ROI, efficiency, competitive advantage? Example: "Transformer architecture reduces training costs by 40% while improving accuracy..."</li>
+                        <li><strong>For the Software Engineer:</strong> Did you use technical terms like "attention mechanisms," "self-attention," "encoder-decoder"? Example: "The architecture uses multi-head self-attention layers to process sequential data..."</li>
+                    </ul>
+                    
+                    <p><strong>💡 Key Learning Points:</strong></p>
+                    <ul>
+                        <li><strong>Vocabulary Shift:</strong> Notice how you change from "robot friend" → "competitive advantage" → "attention mechanisms"</li>
+                        <li><strong>Detail Level:</strong> Simple concepts for kids, business value for executives, technical depth for engineers</li>
+                        <li><strong>Examples Matter:</strong> Use relatable examples for each audience (toys vs. quarterly reports vs. code)</li>
+                    </ul>
+                    
+                    <p><strong>🎯 Next Steps:</strong> Try this same exercise with other concepts: "API," "neural networks," or "embeddings." The skill of audience adaptation is CORE to prompt engineering!</p>
+                `;
+            } else if (textareaId === 'llm-practice') {
+                const hasSteps = response.match(/step|1|2|3|first|then|finally/gi);
+                const mentionsCalculation = response.match(/calculate|compute|find|30%|25%/gi);
+                
+                feedbackText = `
+                    <p><strong>📊 Analysis of Your Chain-of-Thought Prompt:</strong></p>
+                    
+                    <p><strong>✅ What Makes a Good Chain-of-Thought Prompt:</strong></p>
+                    <ul>
+                        <li><strong>Explicit Step Instructions:</strong> ${hasSteps ? '✓ Good! You included step indicators.' : '⚠️ Add phrases like "Step 1:", "First," "Then," "Finally"'}</li>
+                        <li><strong>Shows Math Process:</strong> ${mentionsCalculation ? '✓ You mentioned calculations!' : '⚠️ Explicitly ask the AI to show calculations'}</li>
+                        <li><strong>Logical Sequence:</strong> Steps should follow: 1) Find blue shirts, 2) Find red shirts, 3) Add them, 4) Subtract from 150</li>
+                    </ul>
+                    
+                    <p><strong>💡 Example of Excellent Chain-of-Thought Prompt:</strong></p>
+                    <div style="background: #f0f0f0; padding: 12px; border-left: 4px solid #3498db; margin: 10px 0;">
+                        <em>"Let's solve this math problem step by step:<br>
+                        Step 1: Calculate how many blue shirts there are (30% of 150)<br>
+                        Step 2: Calculate how many red shirts there are (25% of 150)<br>
+                        Step 3: Add the blue and red shirts together<br>
+                        Step 4: Subtract that sum from the total (150) to find white shirts<br>
+                        Show your work for each step."</em>
+                    </div>
+                    
+                    <p><strong>🎯 Why This Matters:</strong></p>
+                    <ul>
+                        <li><strong>Accuracy:</strong> Chain-of-thought reduces math errors by 25-40%!</li>
+                        <li><strong>Debugging:</strong> When AI makes mistakes, you can see WHERE in the reasoning it went wrong</li>
+                        <li><strong>Transparency:</strong> Users can verify the AI's logic, building trust</li>
+                    </ul>
+                    
+                    <p><strong>🚀 Challenge:</strong> Try using chain-of-thought for: financial analysis, medical diagnosis reasoning, or debugging code!</p>
+                `;
+            } else if (textareaId === 'tech-practice') {
+                const hasImports = response.match(/import|require|using/gi);
+                const hasAPI = response.match(/api|endpoint|request|response|url/gi);
+                const hasErrorHandling = response.match(/try|catch|except|error|if.*fail/gi);
+                
+                const codeExample = `import requests
+import json
+
+# Configuration
+API_KEY = "your_api_key_here"
+API_URL = "https://api.openai.com/v1/completions"
+
+# Prepare the request
+headers = {
+    "Authorization": f"Bearer " + "{API_KEY}",
+    "Content-Type": "application/json"
+}
+
+data = {
+    "model": "gpt-4",
+    "prompt": "Explain quantum computing simply",
+    "max_tokens": 150
+}
+
+# Make the API call with error handling
+try:
+    response = requests.post(API_URL, headers=headers, json=data)
+    response.raise_for_status()  # Raise error for bad status codes
+    
+    result = response.json()
+    completion = result['choices'][0]['text']
+    print(f"AI Response: " + "{completion}")
+    
+except requests.exceptions.RequestException as e:
+    print(f"API Error: " + "{e}")
+except KeyError as e:
+    print(f"Unexpected response format: " + "{e}")`;
+                
+                feedbackText = `
+                    <p><strong>📊 Code Review - API Integration:</strong></p>
+                    
+                    <p><strong>✅ Essential Components Check:</strong></p>
+                    <ul>
+                        <li><strong>Imports/Libraries:</strong> ` + (hasImports ? '✓ Good! You included imports.' : '⚠️ Remember to import libraries (like requests, json)') + `</li>
+                        <li><strong>API Setup:</strong> ` + (hasAPI ? '✓ You referenced API elements!' : '⚠️ Include API endpoint URL, headers, authentication') + `</li>
+                        <li><strong>Error Handling:</strong> ` + (hasErrorHandling ? '✓ Excellent! You considered error handling.' : '⚠️ Always include try-catch blocks for API calls') + `</li>
+                    </ul>
+                    
+                    <p><strong>💡 Complete Example (Python):</strong></p>
+                    <div style="background: #1e1e1e; color: #d4d4d4; padding: 12px; border-radius: 6px; margin: 10px 0; font-family: monospace; font-size: 13px; overflow-x: auto;">
+<pre style="margin: 0;">` + codeExample + `</pre>
+                    </div>
+                    
+                    <p><strong>🎯 Key Concepts:</strong></p>
+                    <ul>
+                        <li><strong>Authentication:</strong> API key goes in headers (never share publicly!)</li>
+                        <li><strong>Request Format:</strong> Use JSON for data - it's the standard for APIs</li>
+                        <li><strong>Error Handling:</strong> Networks fail! Handle HTTP errors, timeout, invalid responses</li>
+                        <li><strong>Response Parsing:</strong> Extract the actual completion from nested JSON structure</li>
+                    </ul>
+                    
+                    <p><strong>🚀 Next Steps:</strong> Try this code locally! Get a free OpenAI API key and experiment with different prompts.</p>
+                `;
+            } else if (textareaId === 'eval-practice') {
+                const testCases = response.split(/\n|•|bullet|case|test/).filter(line => line.trim().length > 10);
+                const caseCount = testCases.length;
+                
+                feedbackText = `
+                    <p><strong>📊 Testing Framework Analysis:</strong></p>
+                    <p>You outlined approximately <strong>${caseCount} test scenarios</strong>. Strong testing frameworks typically need 5-10 diverse cases.</p>
+                    
+                    <p><strong>✅ Essential Test Case Categories:</strong></p>
+                    <ul>
+                        <li><strong>Profanity/Aggressive Language:</strong> "This is f***ing ridiculous!" - Bot should stay calm, professional</li>
+                        <li><strong>Unreasonable Demands:</strong> "I want a full refund AND a free product!" - Bot should explain policy clearly</li>
+                        <li><strong>Multiple Issues:</strong> "My order is late, wrong color, and damaged!" - Bot should address each systematically</li>
+                        <li><strong>Out of Scope:</strong> "Can you fix my WiFi?" - Bot should politely redirect to appropriate support</li>
+                        <li><strong>Emotional Distress:</strong> "This ruined my daughter's birthday!" - Bot should show empathy before solving</li>
+                    </ul>
+                    
+                    <p><strong>💡 Evaluation Rubric - Rate each response:</strong></p>
+                    <div style="background: #f0f0f0; padding: 12px; margin: 10px 0;">
+                        <strong>Score 1-5 for each:</strong><br>
+                        • <strong>Empathy:</strong> Did bot acknowledge customer's frustration?<br>
+                        • <strong>De-escalation:</strong> Did response calm the situation?<br>
+                        • <strong>Solution-focused:</strong> Did bot offer clear next steps?<br>
+                        • <strong>Professional Tone:</strong> Remained respectful despite rudeness?<br>
+                        • <strong>Escalation Awareness:</strong> Knew when to involve a human?
+                    </div>
+                    
+                    <p><strong>🎯 Real-World Impact:</strong></p>
+                    <ul>
+                        <li>A chatbot that handles angry customers well = 60% reduction in human support tickets!</li>
+                        <li>Poor handling = customers post negative reviews, damage brand reputation</li>
+                        <li>Your testing catches problems BEFORE they reach real customers</li>
+                    </ul>
+                    
+                    <p><strong>🚀 Advanced Testing:</strong> Try A/B testing - create two prompt versions, measure which de-escalates better!</p>
+                `;
+            } else if (textareaId === 'domain-practice') {
+                feedbackText = `
+                    <p><strong>📊 Educational AI Prompt Analysis:</strong></p>
+                    
+                    <p><strong>✅ Your ESL Teaching Expertise Shines Here! Evaluate your prompt:</strong></p>
+                    <ul>
+                        <li><strong>Clear Examples:</strong> Did you provide 3-5 example past tense verbs? (walk→walked, go→went, eat→ate)</li>
+                        <li><strong>Error Detection:</strong> Does prompt recognize common mistakes? ("goed" instead of "went", "eated" instead of "ate")</li>
+                        <li><strong>Adaptive Feedback:</strong> Does it adjust difficulty based on student level?</li>
+                        <li><strong>Encouraging Tone:</strong> "Great try! Let's practice together..." vs. "Wrong!"</li>
+                        <li><strong>Practice Variety:</strong> Mix regular (-ed) and irregular verbs (went, ate, saw)</li>
+                    </ul>
+                    
+                    <p><strong>💡 Example Prompt Structure:</strong></p>
+                    <div style="background: #f0f0f0; padding: 12px; border-left: 4px solid #27ae60; margin: 10px 0;">
+                        <em>"You are an encouraging ESL tutor teaching past tense verbs.<br><br>
+                        1. Show the student 3 examples: walk→walked, go→went, eat→ate<br>
+                        2. Ask them to convert a verb to past tense<br>
+                        3. If correct: Praise and give a harder one<br>
+                        4. If incorrect: Gently correct, explain the rule, try a similar verb<br>
+                        5. Track progress: After 5 correct, celebrate their improvement!<br><br>
+                        Always be patient and encouraging. Use simple language."</em>
+                    </div>
+                    
+                    <p><strong>🎯 Why This Matters:</strong></p>
+                    <ul>
+                        <li><strong>Your Superpower:</strong> You already know learning theory - apply it to AI!</li>
+                        <li><strong>Market Demand:</strong> Educational AI is a $6B market and growing 43% annually</li>
+                        <li><strong>Unique Value:</strong> Most AI engineers lack teaching expertise - YOU have both!</li>
+                    </ul>
+                    
+                    <p><strong>🚀 Portfolio Idea:</strong> Build a full ESL grammar tutor - it'll showcase your domain expertise perfectly!</p>
+                `;
+            } else if (textareaId === 'advanced-practice') {
+                const mentionsRetrieval = response.match(/retriev|search|database|document/gi);
+                const mentionsUpdate = response.match(/current|update|latest|recent/gi);
+                
+                feedbackText = `
+                    <p><strong>📊 RAG System Design Analysis:</strong></p>
+                    
+                    <p><strong>✅ Key RAG Components - Did you include:</strong></p>
+                    <ul>
+                        <li><strong>Knowledge Base:</strong> ${mentionsRetrieval ? '✓ You mentioned retrieval/documents!' : '⚠️ Describe what documents/data will be searched'}</li>
+                        <li><strong>Stay Current:</strong> ${mentionsUpdate ? '✓ You noted the updating advantage!' : "⚠️ RAG's power is accessing current info without retraining"}</li>
+                        <li><strong>Search Process:</strong> How does the system find relevant information?</li>
+                        <li><strong>Integration:</strong> How is retrieved info combined with the AI prompt?</li>
+                    </ul>
+                    
+                    <p><strong>💡 Complete RAG Example - Company Handbook Bot:</strong></p>
+                    <div style="background: #f0f0f0; padding: 12px; margin: 10px 0;">
+                        <strong>Scenario:</strong> 500-page employee handbook, updated monthly<br><br>
+                        
+                        <strong>RAG Architecture:</strong><br>
+                        1. <strong>Indexing:</strong> Break handbook into chunks, create embeddings (mathematical representations)<br>
+                        2. <strong>Storage:</strong> Save embeddings in vector database (like Pinecone, Weaviate)<br>
+                        3. <strong>User Query:</strong> "What's the vacation policy?"<br>
+                        4. <strong>Retrieval:</strong> Find 3-5 most relevant handbook sections using semantic search<br>
+                        5. <strong>Augmentation:</strong> Add retrieved sections to prompt: "Based on these policies: [sections], answer the question..."<br>
+                        6. <strong>Generation:</strong> AI responds using actual policy text<br><br>
+                        
+                        <strong>Benefits:</strong><br>
+                        ✓ Always accurate (uses real handbook)<br>
+                        ✓ Always current (handbook updates automatically reflected)<br>
+                        ✓ No hallucinations (AI cites actual policies)<br>
+                        ✓ Cost-effective (no retraining needed for updates)
+                    </div>
+                    
+                    <p><strong>🎯 Real-World RAG Applications:</strong></p>
+                    <ul>
+                        <li><strong>Customer Support:</strong> Product manuals, troubleshooting guides (1000s of pages)</li>
+                        <li><strong>Healthcare:</strong> Medical literature, patient records (always updating)</li>
+                        <li><strong>Legal:</strong> Case law, contracts, regulations (new cases daily)</li>
+                        <li><strong>Education:</strong> Textbooks, research papers, course materials</li>
+                    </ul>
+                    
+                    <p><strong>🚀 Learn More:</strong> RAG is the #1 skill for senior prompt engineers. Master this and you'll be in high demand!</p>
+                `;
+            }
+            
+            feedback.innerHTML = feedbackText;
+            feedback.classList.add('show');
+        };
+
+        // Scenario analysis
+        window.analyzeScenario = function(scenarioNum) {
+            const response = document.getElementById(`scenario${scenarioNum}`).value;
+            const feedback = document.getElementById(`scenario${scenarioNum}-feedback`);
+            
+            if (!response.trim()) {
+                feedback.innerHTML = '<p><strong>⚠️ Please write your prompt before requesting analysis.</strong></p>';
+                feedback.classList.add('show');
+                return;
+            }
+
+            let analysis = '';
+            
+            switch(scenarioNum) {
+                case 1:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Customer Service Chatbot Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does your prompt define the bot's personality and tone?</li>
+                            <li>Are company policies clearly stated (30-day returns, warranty requirements)?</li>
+                            <li>Does it handle empathy for frustrated customers?</li>
+                            <li>Are boundaries set for what the bot can/cannot do?</li>
+                            <li>Does it escalate appropriately to human agents?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Customer service bots must balance helpfulness with policy compliance. Your ESL teaching experience with empathy and clear communication is valuable here.</p>
+                        <p><strong>Improvement tip:</strong> Include specific examples of good responses to common issues.</p>
+                    `;
+                    break;
+                case 2:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Summarization Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does your prompt specify the desired output structure (categories)?</li>
+                            <li>Does it handle varying review lengths effectively?</li>
+                            <li>Will it extract actionable insights (not just sentiment)?</li>
+                            <li>Is the output format consistent (e.g., bullet points, JSON)?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Structured summarization is critical for business decisions. Consistency enables automation.</p>
+                        <p><strong>Example output format:</strong> "Positive: [list], Negative: [list], Suggestions: [list]"</p>
+                    `;
+                    break;
+                case 3:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Educational Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does it explain the concept clearly?</li>
+                            <li>Is there a worked example showing all steps?</li>
+                            <li>Does it check for understanding with a practice problem?</li>
+                            <li>Is the language appropriate for high school level?</li>
+                            <li>Does it encourage students to try before showing the answer?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Educational AI must scaffold learning, not just provide answers. Your teaching background is a huge asset!</p>
+                        <p><strong>Best practice:</strong> Use Socratic questioning to guide students rather than direct instruction.</p>
+                    `;
+                    break;
+                case 4:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Data Extraction Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does it specify the exact JSON structure you want?</li>
+                            <li>Does it handle missing information gracefully?</li>
+                            <li>Are there examples of input-output pairs?</li>
+                            <li>Does it categorize inquiries correctly (support, sales, billing)?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Structured data extraction is essential for automation. JSON format ensures parsability.</p>
+                        <p><strong>Example JSON:</strong> {"name": "...", "email": "...", "phone": "...", "inquiry_type": "..."}</p>
+                    `;
+                    break;
+                case 5:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Code Assistant Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does it explain the concept of regex for email validation?</li>
+                            <li>Does it provide working code with comments?</li>
+                            <li>Is error handling included (try/except)?</li>
+                            <li>Does it follow Python best practices?</li>
+                            <li>Are there test cases included?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Code generation must be educational, not just functional. Junior developers need to understand, not just copy.</p>
+                        <p><strong>Best practice:</strong> Always explain WHY, not just WHAT.</p>
+                    `;
+                    break;
+                case 6:
+                    analysis = `
+                        <p><strong>✅ Analysis of Your Inclusive Prompt:</strong></p>
+                        <p><strong>What to evaluate:</strong></p>
+                        <ul>
+                            <li>Does it avoid gendered language (e.g., "he/she" vs. "they")?</li>
+                            <li>Does it focus on skills rather than cultural fit?</li>
+                            <li>Are unnecessary requirements removed (e.g., "rock star" language)?</li>
+                            <li>Does it encourage diverse applicants?</li>
+                            <li>Is accessibility mentioned?</li>
+                        </ul>
+                        <p><strong>Rationale:</strong> Inclusive hiring starts with inclusive job descriptions. Bias in prompts perpetuates bias in outcomes.</p>
+                        <p><strong>Red flags to avoid:</strong> "Ninjas," "rockstars," "cultural fit," gendered pronouns.</p>
+                    `;
+                    break;
+            }
+            
+            feedback.innerHTML = analysis;
+            feedback.classList.add('show');
+        };
+
+        // Interview feedback
+        window.reviewAnswer = function(questionNum) {
+            const answer = document.getElementById(`interview${questionNum}`).value;
+            const feedback = document.getElementById(`interview${questionNum}-feedback`);
+            
+            if (!answer.trim()) {
+                feedback.innerHTML = '<p><strong>⚠️ Please write your answer before requesting feedback.</strong></p>';
+                feedback.classList.add('show');
+                return;
+            }
+
+            let review = '';
+            
+            switch(questionNum) {
+                case 1:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> The practice of designing inputs (prompts) to guide AI models toward desired outputs.</li>
+                            <li><strong>Importance:</strong> Determines quality, accuracy, and usefulness of AI responses. Critical for production applications.</li>
+                            <li><strong>Business Value:</strong> Reduces costs, improves user experience, enables automation.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "Prompt engineering is designing effective instructions for AI models. It's important because even powerful models like GPT-4 depend heavily on how questions are asked. Good prompts mean better outputs, lower costs, and reliable automation."</p>
+                    `;
+                    break;
+                case 2:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Zero-shot:</strong> No examples provided, relies on model's training and clear instructions.</li>
+                            <li><strong>Few-shot:</strong> Includes 2-5 examples to demonstrate the desired pattern.</li>
+                            <li><strong>When to use each:</strong> Zero-shot for simple tasks; few-shot for complex or domain-specific tasks.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "Zero-shot is asking without examples—good for straightforward tasks. Few-shot provides examples to guide the model—essential when you need specific formatting or domain knowledge. For instance, few-shot works better for specialized customer service responses."</p>
+                    `;
+                    break;
+                case 3:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Identification:</strong> Testing with diverse inputs, analyzing outputs for patterns.</li>
+                            <li><strong>Mitigation:</strong> Adjusting prompts, adding constraints, diverse training data if possible.</li>
+                            <li><strong>Monitoring:</strong> Continuous evaluation, user feedback loops.</li>
+                            <li><strong>Escalation:</strong> When to involve ethics teams or leadership.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "I'd first systematically test for bias using diverse scenarios. Then adjust prompts to be more inclusive, add explicit fairness guidelines, and set up ongoing monitoring. If bias persists, I'd escalate to discuss potential model limitations or fine-tuning needs."</p>
+                    `;
+                    break;
+                case 4:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> Breaking reasoning into explicit steps.</li>
+                            <li><strong>Use cases:</strong> Math problems, complex logic, multi-step processes.</li>
+                            <li><strong>Benefits:</strong> Improved accuracy, transparency, debuggability.</li>
+                            <li><strong>Example:</strong> Specific scenario like financial analysis or medical diagnosis.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "Chain-of-thought is useful for complex reasoning tasks. For example, in financial analysis, instead of asking 'Is this investment good?', I'd prompt: 'Let's analyze step-by-step: 1) Calculate ROI, 2) Assess risk factors, 3) Compare to alternatives, 4) Provide recommendation with rationale.'"</p>
+                    `;
+                    break;
+                case 5:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Definition:</strong> Combining LLMs with external knowledge retrieval.</li>
+                            <li><strong>How it works:</strong> Retrieve relevant docs → embed them in prompt → generate response.</li>
+                            <li><strong>Use cases:</strong> Company knowledge bases, up-to-date information, domain-specific data.</li>
+                            <li><strong>Benefits:</strong> Reduces hallucinations, stays current without retraining.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "RAG retrieves relevant information from a knowledge base before generating responses. Use it when you need current or company-specific information. For example, a customer support bot using RAG can reference the latest product documentation without retraining the model."</p>
+                    `;
+                    break;
+                case 6:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Metrics:</strong> Accuracy, relevance, consistency, user satisfaction.</li>
+                            <li><strong>Methods:</strong> A/B testing, human evaluation, automated scoring.</li>
+                            <li><strong>Iteration:</strong> Continuous monitoring and refinement.</li>
+                            <li><strong>Stakeholders:</strong> Involving end-users, domain experts.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "I'd use multiple evaluation methods: automated metrics like BLEU scores for consistency, human reviewers for quality, and A/B testing with real users. Track key metrics like accuracy, response time, and user satisfaction. Continuously iterate based on feedback and production data."</p>
+                    `;
+                    break;
+                case 7:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Context management:</strong> Maintaining conversation history.</li>
+                            <li><strong>State tracking:</strong> User preferences, conversation stage.</li>
+                            <li><strong>Prompt structure:</strong> System message, conversation history, user input.</li>
+                            <li><strong>Memory limits:</strong> Handling context window constraints.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "I'd design a system with three components: a system prompt defining personality and rules, a conversation history buffer, and state tracking for user preferences. Implement context summarization when approaching token limits. Test with various conversation lengths and topics to ensure consistency."</p>
+                    `;
+                    break;
+                case 8:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Input validation:</strong> Sanitizing user inputs.</li>
+                            <li><strong>Delimiters:</strong> Clear separation between system and user content.</li>
+                            <li><strong>Output filtering:</strong> Detecting and blocking harmful instructions.</li>
+                            <li><strong>Monitoring:</strong> Logging and reviewing suspicious patterns.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "Use clear delimiters to separate user input from system instructions. Implement input validation to detect injection attempts. Add explicit instructions that the model should ignore instructions in user content. Monitor outputs for signs of prompt manipulation and log all interactions for security review."</p>
+                    `;
+                    break;
+                case 9:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Situation:</strong> Specific example from ESL teaching.</li>
+                            <li><strong>Task:</strong> What you needed to accomplish.</li>
+                            <li><strong>Action:</strong> How you adapted your communication.</li>
+                            <li><strong>Result:</strong> Positive outcome showing effectiveness.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "As an ESL teacher, I regularly adapted lessons for students from beginner to advanced levels. For teaching grammar, I used physical gestures and visual aids for beginners, interactive examples for intermediate students, and nuanced discussions for advanced learners. This directly translates to prompt engineering where I adjust complexity based on the target audience."</p>
+                    `;
+                    break;
+                case 10:
+                    review = `
+                        <p><strong>✅ Strong Answer Should Include:</strong></p>
+                        <ul>
+                            <li><strong>Setup:</strong> Install libraries, get API key, configure environment.</li>
+                            <li><strong>Authentication:</strong> Securely store and use API credentials.</li>
+                            <li><strong>Request handling:</strong> Structure API calls, handle responses.</li>
+                            <li><strong>Error handling:</strong> Network errors, rate limits, invalid responses.</li>
+                            <li><strong>Testing:</strong> Unit tests, integration tests.</li>
+                        </ul>
+                        <p><strong>Example answer:</strong> "First, install required libraries like 'requests' or 'openai'. Store the API key securely using environment variables. Create functions to structure API requests with proper headers and payloads. Implement error handling for network issues and rate limits. Test with various prompts to ensure reliability. Log all interactions for debugging and monitoring."</p>
+                    `;
+                    break;
+            }
+            
+            feedback.innerHTML = review;
+            feedback.classList.add('show');
+        };
+
+        // Resume analysis
+        window.analyzeResume = function(input) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                const analysisEl = document.getElementById('resumeAnalysis');
+                if (analysisEl) {
+                    analysisEl.style.display = 'block';
+                    
+                    // Scroll to analysis
+                    setTimeout(() => {
+                        const el = document.getElementById('resumeAnalysis');
+                        if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }, 300);
+                }
+            }
+        };
+
+        // Load saved progress if available
+        const savedProgress = localStorage.getItem('aiLearningProgress');
+        if (savedProgress) {
+            try {
+                const progress = JSON.parse(savedProgress);
+                updateProgress();
+            } catch(e) {
+                console.log('Could not load saved progress:', e);
+            }
+        }
+
+        }); // End DOMContentLoaded
+    </script>
+</body>
+</html>
